@@ -1,5 +1,5 @@
-import React from "react";
-
+import React, { useContext } from "react";
+import { LoginContext } from "../../contexts/loginContext";
 import { Link, NavLink } from "react-router-dom";
 
 import { navbarItems } from "./navbarItems";
@@ -8,6 +8,8 @@ import { MdOutlineArticle } from "react-icons/md";
 import { BiUser } from "react-icons/bi";
 
 const Navbar = () => {
+  const [login] = useContext(LoginContext);
+
   return (
     <header className="z-40 relative bg-white text-xl font-Vazir shadow-md w-screen ">
       <div id="navbar-top" className="w-full shadow-sm">
@@ -33,17 +35,31 @@ const Navbar = () => {
               alt=""
             />
           </div>
-          <Link to="login">
-            <button
-              className=" active:scale-95 px-6 py-3 bg-white rounded-lg hover:shadow-lg border transition-all hover:scale-105
+          {!login ? (
+            <Link to="login">
+              <button
+                className=" active:scale-95 px-6 py-3 bg-white rounded-lg hover:shadow-lg border transition-all hover:scale-105
            my-4 flex group flex-row items-center gap-2"
-            >
-              <BiUser className="group-hover:text-[#1D9299] text-black/30 transition-all" />
-              <span className="group-hover:text-[#1D9299] transition-all">
-                ورود / عضویت
-              </span>
-            </button>
-          </Link>
+              >
+                <BiUser className="group-hover:text-[#1D9299] text-black/30 transition-all" />
+                <span className="group-hover:text-[#1D9299] transition-all">
+                  ورود / عضویت
+                </span>
+              </button>
+            </Link>
+          ) : (
+            <Link to="updatePassword">
+              <button
+                className=" active:scale-95 px-6 py-3 bg-white rounded-lg hover:shadow-lg border transition-all hover:scale-105
+           my-4 flex group flex-row items-center gap-2"
+              >
+                <BiUser className="group-hover:text-[#1D9299] text-black/30 transition-all" />
+                <span className="group-hover:text-[#1D9299] transition-all">
+                  حساب کاربری
+                </span>
+              </button>
+            </Link>
+          )}
         </div>
       </div>
       <div id="navbar-bottom" className="py-3">

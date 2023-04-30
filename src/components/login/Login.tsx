@@ -1,12 +1,18 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
+import { useNavigate } from 'react-router-dom';
 
+import { LoginContext } from "../../contexts/loginContext.jsx";
 import logo from "../../assets/logo.svg";
 import { motion as m } from "framer-motion";
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState("");
-  let [validate, setValidate] = useState<boolean>(true);
-  let [hasaccount, setHasaccount] = useState<boolean>(true);
+  const [validate, setValidate] = useState<boolean>(true);
+  const [hasaccount, setHasaccount] = useState<boolean>(true);
+
+  const [login, setLogin] = useContext(LoginContext)
+
+  const navigate = useNavigate();
 
   const loginformSubmitHadler = (e) => {
     e.preventDefault();
@@ -34,6 +40,14 @@ const Login: React.FC = () => {
     } else {
       setValidate(false);
       setHasaccount(false);
+    }
+
+    if(hasaccount && validate) {
+      setLogin(() => true)
+      setTimeout(() => {
+        localStorage.setItem('login', 'loggedIn')
+        navigate('/')
+      }, 1500);
     }
   };
 
@@ -93,7 +107,16 @@ const Login: React.FC = () => {
           </m.div>
         ) : null
       }
-      
+      {
+        login ? (
+          <m.div initial={{scale: 0.2}} animate={{scale: 1}}
+         
+          >
+            <p  className="bg-green-100 font-Vazir rounded-lg py-2 px-5 text-green-500 border-b-4 border-green-500 my-2">شما وارد اکانت خود شدید.</p>
+          
+          </m.div>
+        ) : null
+      }
     </div>
   );
 };
