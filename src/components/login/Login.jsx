@@ -3,6 +3,10 @@ import React from "react";
 import logo from "../../assets/logo.svg";
 //#1D9399
 
+const Login = () => {
+  const loginformSubmitHadler = (e) => {
+    e.preventDefault();
+  };
 
   return (
     <div className="absolute h-screen w-screen bg-gray-100 top-0 left-0 flex justify-center items-center">
@@ -22,7 +26,7 @@ import logo from "../../assets/logo.svg";
             نام کاربری
           </label>
           <input
-            className="w-full bg-gray-100 placeholder:text-black/60 font-semibold focus:bg-gray-50 transition-all py-4 outline-none text-center my-3 rounded"
+            className="w-full bg-gray-100 border  placeholder:text-black/60 font-semibold focus:bg-gray-50 transition-all py-4 outline-none text-center my-3 rounded"
             type="text"
             name="username"
             id="username"
