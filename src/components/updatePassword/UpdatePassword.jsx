@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion as m } from "framer-motion";
 import {
@@ -27,6 +27,12 @@ const UpdatePassword = () => {
       return;
     }
   };
+
+  useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      navigate("/login");
+    }
+  });
 
   return (
     <div className="absolute font-Vazir top-0 left-0 flex flex-col justify-center items-center bg-gray-100 w-full h-screen">

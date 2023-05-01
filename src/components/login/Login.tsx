@@ -1,51 +1,39 @@
 import React, { useState,useContext } from "react";
 import { useNavigate } from 'react-router-dom';
-
+import axios from "axios";
 import { LoginContext } from "../../contexts/loginContext.jsx";
 import logo from '../../assets/logo.svg';
 import { motion as m } from "framer-motion";
 
 const Login: React.FC = () => {
-  const [username, setUsername] = useState("");
-  const [validate, setValidate] = useState<boolean>(true);
-  const [hasaccount, setHasaccount] = useState<boolean>(true);
-
+  const [username, setUsername] = useState("+98");
+  const [, , profile, setProfile] = useContext(LoginContext)
   const [login, setLogin] = useContext(LoginContext)
-
   const navigate = useNavigate();
 
   const loginformSubmitHandler = async (e) => {
     e.preventDefault();
-  
+
     if (username !== "") {
       const phoneRegex = /^\+?[0-9]{10,14}$/;
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   
-      if (phoneRegex.test(username)) {
-        setValidate(true);
-        if (username === "09102642673") {
-          setHasaccount(true);
-        } else {
-          setHasaccount(false);
-        }
-      } else if (emailRegex.test(username)) {
-        setValidate(true);
-        if (username === "email@gmail.com") {
-          setHasaccount(true);
-        } else {
-          setHasaccount(false);
-        }
-      } else {
-        setValidate(false);
-        setHasaccount(false);
+      if (phoneRegex.test(username) || emailRegex.test(username)) {
+        axios.get('http://localhost:3000/data')
+        .then(async response => {
+          const data = response.data
+          if(username === data.mobile){
+             await setLogin(true)
+              localStorage.setItem('token', data.token)
+              setProfile(() =>(data))
+              setTimeout(() => {
+                navigate('/')
+              }, 1500);
+          }
+        })
+        .catch(error => console.log(error));
       }
-  
-      if (hasaccount && validate) {
-        setLogin(true);
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-        localStorage.setItem("login", "loggedIn");
-        navigate("/");
-      }
+      
     }
   };
   
@@ -71,17 +59,19 @@ const Login: React.FC = () => {
         <h1 className="mb-8 font-semibold text-3xl">ورود | عضویت</h1>
         <div className="flex flex-col w-full mx-auto">
           <label htmlFor="username" className="text-xl mb-3">
-            نام کاربری
+            شماره موبایل خود را در فیلد زیر وارد کنید
           </label>
           <input
             dir="ltr"
             value={username}
+            required
             onInput={(e) => usernameChangeHandler(e)}
             className="w-full bg-gray-100 border  placeholder:text-black/60 font-semibold focus:bg-gray-50 transition-all py-4 outline-none text-center my-3 rounded"
-            type="text"
+            type="tel"
             name="username"
+            
             id="username"
-            placeholder="لطفا شماره موبایل یا ایمیل خود را وارد کنید"
+            placeholder="شماره موبایل خود را با 98+ وارد کنید"
           />
         </div>
         <p className="font-sm font-light ">
@@ -94,24 +84,16 @@ const Login: React.FC = () => {
         </button>
       </m.form>
       {
-        !validate ? (
-          <m.p initial={{scale: 0.2}} animate={{scale: 1}} className="bg-red-100 font-Vazir rounded-lg py-2 px-5 text-red-500 border-b-4 border-red-500 my-2">نام کاربری یا ایمیل وارد شده صحیح نمیباشد</m.p>
-        ) : !hasaccount ? (
-          <m.div initial={{scale: 0.2}} animate={{scale: 1}}
-         
-          >
-            <p  className="bg-red-100 font-Vazir rounded-lg py-2 px-5 text-red-500 border-b-4 border-red-500 my-2">احتمالا هنوز در وبسایت ما اکانتی ندارید</p>
-          <a href="#" className="text-center w-full bg-green-500 hover:bg-green-600 transition-all text-white my-2 py-2 rounded-md
-           block">ثبت نام</a>
-          </m.div>
-        ) : null
-      }
-      {
         login ? (
-          <m.div initial={{scale: 0.2}} animate={{scale: 1}}
+          <m.p
+            initial={{ scale: 0.2 }}
+            animate={{ scale: 1 }}
+            className="bg-green-100 font-Vazir rounded-lg py-2 px-5 text-green-500 border-b-4 border-green-500 my-2"
           >
-            <p  className="bg-green-100 font-Vazir rounded-lg py-2 px-5 text-green-500 border-b-4 border-green-500 my-2">شما وارد اکانت خود شدید.</p>
-          </m.div>
+      {
+        profile.first_name
+      } عزیز، شما به اکانت خود وارد شدید
+          </m.p>
         ) : null
       }
     </div>

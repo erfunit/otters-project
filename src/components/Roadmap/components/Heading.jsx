@@ -7,10 +7,7 @@ const Heading = () => {
     <div className="w-screen h-screen flex justify-center items-center">
       <div className=" w-[106vw] h-[106vw] mr-[6vw] absolute top-[-65%] mt-[-10%] bg-[#FB9D00] shadow-md rounded-full"></div>
       <div className=" w-[106vw] h-[106vw] mr-[-3vw] absolute top-[-60%] mt-[-10%] bg-[#ffffff] shadow-md rounded-full"></div>
-      <div
-        className=" w-[106vw] h-[106vw] mr-[-3vw] absolute top-[-70%] mt-[-10%] bg-gradient-to-br from-[#FFFFFF] to-[#1C9399] shadow-md rounded-full"
-        fl
-      ></div>
+      <div className=" w-[106vw] h-[106vw] mr-[-3vw] absolute top-[-70%] mt-[-10%] bg-gradient-to-br from-[#FFFFFF] to-[#1C9399] shadow-md rounded-full"></div>
       <m.div
         initial={{ opacity: 0, top: -140 }}
         animate={{ opacity: 1, top: -150 }}
