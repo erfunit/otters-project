@@ -2,7 +2,7 @@ import React, { useState,useContext } from "react";
 import { useNavigate } from 'react-router-dom';
 
 import { LoginContext } from "../../contexts/loginContext.jsx";
-import logo from "../../assets/logo.svg";
+import logo from '../../assets/logo.svg';
 import { motion as m } from "framer-motion";
 
 const Login: React.FC = () => {
@@ -14,42 +14,41 @@ const Login: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const loginformSubmitHadler = (e) => {
+  const loginformSubmitHandler = async (e) => {
     e.preventDefault();
-
-    //Phone number regular expression
-    const phoneRegex = /^\+?[0-9]{10,14}$/;
-
-    // Email address regular expression
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (phoneRegex.test(username)) {
-      setValidate(true);
-      if (username === "09102642673") {
-        setHasaccount(true);
+  
+    if (username !== "") {
+      const phoneRegex = /^\+?[0-9]{10,14}$/;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  
+      if (phoneRegex.test(username)) {
+        setValidate(true);
+        if (username === "09102642673") {
+          setHasaccount(true);
+        } else {
+          setHasaccount(false);
+        }
+      } else if (emailRegex.test(username)) {
+        setValidate(true);
+        if (username === "email@gmail.com") {
+          setHasaccount(true);
+        } else {
+          setHasaccount(false);
+        }
       } else {
+        setValidate(false);
         setHasaccount(false);
       }
-    } else if (emailRegex.test(username)) {
-      setValidate(true);
-      if (username === "email@gmail.com") {
-        setHasaccount(true);
-      } else {
-        setHasaccount(false);
+  
+      if (hasaccount && validate) {
+        setLogin(true);
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+        localStorage.setItem("login", "loggedIn");
+        navigate("/");
       }
-    } else {
-      setValidate(false);
-      setHasaccount(false);
-    }
-
-    if(hasaccount && validate) {
-      setLogin(() => true)
-      setTimeout(() => {
-        localStorage.setItem('login', 'loggedIn')
-        navigate('/')
-      }, 1500);
     }
   };
+  
 
   const usernameChangeHandler = (e) => {
     setUsername(e.target.value);
@@ -60,7 +59,7 @@ const Login: React.FC = () => {
       <m.form
         initial={{ left: -5, opacity: 0 }}
         animate={{ left: 0, opacity: 1 }}
-        onSubmit={(e) => loginformSubmitHadler(e)}
+        onSubmit={(e) => loginformSubmitHandler(e)}
         className="px-10 relative font-Vazir flex flex-col bg-white rounded-lg"
       >
         <img
@@ -110,10 +109,8 @@ const Login: React.FC = () => {
       {
         login ? (
           <m.div initial={{scale: 0.2}} animate={{scale: 1}}
-         
           >
             <p  className="bg-green-100 font-Vazir rounded-lg py-2 px-5 text-green-500 border-b-4 border-green-500 my-2">شما وارد اکانت خود شدید.</p>
-          
           </m.div>
         ) : null
       }
