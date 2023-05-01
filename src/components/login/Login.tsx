@@ -7,8 +7,7 @@ import { motion as m } from "framer-motion";
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState("+98");
-  const [, , profile, setProfile] = useContext(LoginContext)
-  const [login, setLogin] = useContext(LoginContext)
+  const [login, setLogin, profile, setProfile] = useContext(LoginContext);
   const navigate = useNavigate();
 
   const loginformSubmitHandler = async (e) => {
@@ -20,23 +19,24 @@ const Login: React.FC = () => {
   
       if (phoneRegex.test(username) || emailRegex.test(username)) {
         axios.get('http://localhost:3000/data')
-        .then(async response => {
-          const data = response.data
-          if(username === data.mobile){
-             await setLogin(true)
-              localStorage.setItem('token', data.token)
-              setProfile(() =>(data))
-              setTimeout(() => {
-                navigate('/')
-              }, 1500);
-          }
-        })
-        .catch(error => console.log(error));
+          .then(async response => {
+              const data = response.data
+              if(username === data.mobile){
+                  await setLogin(true)
+                  localStorage.setItem('token', data.token)
+                  setProfile(() =>(data))
+                  setTimeout(() => {
+                    navigate('/')
+                  }, 1500);
+              }
+          })
+          .catch(error => {
+              console.log(error)
+          });
       }
       
     }
   };
-  
 
   const usernameChangeHandler = (e) => {
     setUsername(e.target.value);
